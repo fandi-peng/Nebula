@@ -1,39 +1,41 @@
+#-*-coding:utf-8-*- 
+
 import tornado.httpserver
 import tornado.ioloop
 import tornado.options
 import tornado.web
 import hashlib
-
+import lxml
+from lxml import etree
 
 from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
 
 class WeChatHandler(tornado.web.RequestHandler):
     def get(self):
+        # 配置微信接口
         signature = self.get_argument('signature', 'none')
         timestamp = self.get_argument('timestamp', 'none')
         nonce = self.get_argument('nonce', 'none')
         echostr = self.get_argument('echostr', 'none')
-        #self.write(signature + " " + timestamp + " " + nonce + " " + echostr + " ")
-        print "--------"
-        print signature
-        print timestamp
-        print nonce
-        print echostr
-        print "--------"
         token = "nebula14"
-
         l = [token,timestamp,nonce]
         l.sort()
         sha1 = hashlib.sha1()
         map(sha1.update,l)
         hashcode = sha1.hexdigest()
-         
- 
         if hashcode == signature:
-            print "verified"
             self.write(echostr)
-            #return echostr
+
+    def POST(self):        
+        str_xml = self.request.body #获得post来的数据
+        xml = etree.fromstring(str_xml)#进行XML解析
+        content=xml.find("Content").text#获得用户所输入的内容
+        msgType=xml.find("MsgType").text
+        fromUser=xml.find("FromUserName").text
+        toUser=xml.find("ToUserName").text
+        return self.render.reply_text(fromUser,toUser,int(time.time()),u"我现在还在开发中，还没有什么功能，您刚才说的是："+content)
+
 
 if __name__ == "__main__":
     tornado.options.parse_command_line()
