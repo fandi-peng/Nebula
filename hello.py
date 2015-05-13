@@ -32,7 +32,7 @@ class WeChatHandler(tornado.web.RequestHandler):
  
         if hashcode == signature:
             print "verified"
-            self.write(hashcode)
+            self.write(echostr)
             #return echostr
 
 if __name__ == "__main__":
