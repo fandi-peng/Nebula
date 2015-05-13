@@ -14,7 +14,13 @@ class WeChatHandler(tornado.web.RequestHandler):
         timestamp = self.get_argument('timestamp', 'none')
         nonce = self.get_argument('nonce', 'none')
         echostr = self.get_argument('echostr', 'none')
-        self.write(signature + " " + timestamp + " " + nonce + " " + echostr + " ")
+        #self.write(signature + " " + timestamp + " " + nonce + " " + echostr + " ")
+        print "--------"
+        print signature
+        print timestamp
+        print nonce
+        print echostr
+        print "--------"
         token = "nebula14"
 
         l = [token,timestamp,nonce]
@@ -25,6 +31,7 @@ class WeChatHandler(tornado.web.RequestHandler):
          
  
         if hashcode == signature:
+            print "verified"
             self.write(hashcode)
             #return echostr
 
