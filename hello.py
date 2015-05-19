@@ -27,6 +27,8 @@ class WeChatHandler(tornado.web.RequestHandler):
         hashcode = sha1.hexdigest()
         if hashcode == signature:
             self.write(echostr)
+            str_xml = self.request.body #获得post来的数据
+            print "post", str_xml
 
     def POST(self):
         str_xml = self.request.body #获得post来的数据
