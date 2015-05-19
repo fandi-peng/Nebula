@@ -7,6 +7,7 @@ import tornado.web
 import hashlib
 import lxml
 from lxml import etree
+import time
 
 from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
@@ -41,7 +42,7 @@ class WeChatHandler(tornado.web.RequestHandler):
         msgType=xml.find("MsgType").text
         fromUser=xml.find("FromUserName").text
         toUser=xml.find("ToUserName").text
-        self.write("got ya bitch")
+        self.render.reply_text(fromUser,toUser,int(time.time()),u"我现在还在开发中，还没有什么功能，您刚才说的是："+content)
 
 
 if __name__ == "__main__":
