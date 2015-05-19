@@ -41,6 +41,7 @@ class WeChatHandler(tornado.web.RequestHandler):
         msgType=xml.find("MsgType").text
         fromUser=xml.find("FromUserName").text
         toUser=xml.find("ToUserName").text
+        self.write("got ya bitch")
 
 
 if __name__ == "__main__":
