@@ -30,7 +30,9 @@ class WeChatHandler(tornado.web.RequestHandler):
 
     def POST(self):
         str_xml = self.request.body #获得post来的数据
+        signature = self.get_argument('signature', 'none')
         self.write(str_xml)
+        print "signature", signature
         print "post", str_xml
         xml = etree.fromstring(str_xml)#进行XML解析
         content=xml.find("Content").text#获得用户所输入的内容
