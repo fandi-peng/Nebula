@@ -41,7 +41,7 @@ class WeChatHandler(tornado.web.RequestHandler):
                     """
         str_xml = self.request.body #获得post来的数据
         xml = etree.fromstring(str_xml)#进行XML解析
-        content=xml.find("Content").text#获得用户所输入的内容
+        content=unicode(xml.find("Content").text, "utf-8")#获得用户所输入的内容
         msgType=xml.find("MsgType").text
         fromUser=xml.find("FromUserName").text
         toUser=xml.find("ToUserName").text
