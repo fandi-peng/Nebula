@@ -32,6 +32,16 @@ class WeChatHandler(tornado.web.RequestHandler):
             print "post", str_xml
 
     def post(self):
+        body_text = """
+                    <xml>
+                    <ToUserName><![CDATA[%s]]></ToUserName>
+                    <FromUserName><![CDATA[%s]]></FromUserName>
+                    <CreateTime>%s</CreateTime>
+                    <MsgType><![CDATA[%s]]></MsgType>
+                    <Content><![CDATA[%s]]></Content>
+                    <MsgId>6038700799783131222</MsgId>
+                    </xml>
+                    """
         str_xml = self.request.body #获得post来的数据
         signature = self.get_argument('signature', 'none')
         self.write(str_xml)
@@ -42,7 +52,8 @@ class WeChatHandler(tornado.web.RequestHandler):
         msgType=xml.find("MsgType").text
         fromUser=xml.find("FromUserName").text
         toUser=xml.find("ToUserName").text
-        self.render.reply_text(fromUser,toUser,int(time.time()),u"我现在还在开发中，还没有什么功能，您刚才说的是："+content)
+        reply = body_text % (fromUser, toUser, str(int(time.time())), msgType, "you just said" + content)
+        self.write(reply)
 
 
 if __name__ == "__main__":
