@@ -29,7 +29,7 @@ class WeChatHandler(tornado.web.RequestHandler):
             self.write(echostr)
 
     def post(self):
-        body_text = """
+        body_text = u"""
                     <xml>
                     <ToUserName><![CDATA[%s]]></ToUserName>
                     <FromUserName><![CDATA[%s]]></FromUserName>
@@ -42,10 +42,10 @@ class WeChatHandler(tornado.web.RequestHandler):
         str_xml = self.request.body #获得post来的数据
         xml = etree.fromstring(str_xml)#进行XML解析
         content=xml.find("Content").text#获得用户所输入的内容
-        content =  content.decode('utf-8')
         msgType=xml.find("MsgType").text
         fromUser=xml.find("FromUserName").text
         toUser=xml.find("ToUserName").text
+        # decode
         reply = body_text % (fromUser, toUser, str(int(time.time())), msgType,
                              "马逸然小公举刚刚对我说：" +'"'+ content+'"'+"耶，好开心哦！")
         print reply
