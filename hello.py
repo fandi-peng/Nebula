@@ -23,13 +23,10 @@ class WeChatHandler(tornado.web.RequestHandler):
         l = [token,timestamp,nonce]
         l.sort()
         sha1 = hashlib.sha1()
-        print "signature", signature
         map(sha1.update,l)
         hashcode = sha1.hexdigest()
         if hashcode == signature:
             self.write(echostr)
-            str_xml = self.request.body #获得post来的数据
-            print "post", str_xml
 
     def post(self):
         body_text = """
@@ -43,16 +40,13 @@ class WeChatHandler(tornado.web.RequestHandler):
                     </xml>
                     """
         str_xml = self.request.body #获得post来的数据
-        signature = self.get_argument('signature', 'none')
-        self.write(str_xml)
-        print "signature", signature
-        print "post", str_xml
         xml = etree.fromstring(str_xml)#进行XML解析
         content=xml.find("Content").text#获得用户所输入的内容
         msgType=xml.find("MsgType").text
         fromUser=xml.find("FromUserName").text
         toUser=xml.find("ToUserName").text
         reply = body_text % (fromUser, toUser, str(int(time.time())), msgType, "you just said" + content)
+        print reply
         self.write(reply)
 
 
