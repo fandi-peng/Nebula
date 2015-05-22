@@ -47,7 +47,7 @@ class WeChatHandler(tornado.web.RequestHandler):
         toUser=xml.find("ToUserName").text
         # decode
         reply = body_text % (fromUser, toUser, str(int(time.time())), msgType,
-                             u"马逸然小公举刚刚对我说：" +'"'+ content+'"'+u"耶，好开心哦！")
+                             u"产品开发中。。。您刚刚说了：" +'"'+ content+'"')
         print reply
         self.write(reply)
 
